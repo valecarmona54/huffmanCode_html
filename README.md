@@ -240,6 +240,3 @@ El proyecto no tiene dependencias externas a otros proyectos. Todas las funciona
    pip show psycopg2
    
  *¡Listo para usar!:* Ahora puedes importar psycopg2 en tus scripts de Python y utilizarlo para conectarte y trabajar con bases de datos PostgreSQL.
-
-#   h o l a  
- 
