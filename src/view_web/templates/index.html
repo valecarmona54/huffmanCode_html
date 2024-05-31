@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compresor Huffman</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            padding: 20px;
+            background: url('{{ url_for('static', filename='pantalla.png') }}') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 3px solid #106861;
+            position: relative;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #106861;
+            background-color: #E8F6F3;
+        }
+        .btn-custom {
+            margin-top: 10px;
+            border-radius: 10px;
+            width: 100%;
+            font-family: 'Roboto', sans-serif;
+        }
+        .btn-compress, .btn-decompress {
+            background-color: #106861;
+            border-color: #106861;
+            color: white;
+        }
+        .btn-compress:hover, .btn-decompress:hover {
+            background-color: #51B2AA;
+            border-color: #1C9D93;
+        }
+        .copy-button {
+            background-color: #999999;
+            border-color: #1C9D93;
+            color: black;
+            border-radius: 10px;
+            margin-left: 10px;
+            width: auto;
+            padding: 5px 10px;
+        }
+        .copy-button:hover {
+            background-color: #888888;
+            border-color: #888888;
+        }
+        .btn-logout {
+            background-color: #A3A6A6;
+            border-color: #A3A6A6;
+            color: white;
+            border-radius: 10px;
+            padding: 5px 10px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: auto;
+            font-size: 14px;
+        }
+        .btn-logout:hover {
+            background-color: #888888;
+            border-color: #888888;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .header img {
+            margin-right: 10px;
+            width: 50px;
+            height: auto;
+        }
+        h1 {
+            font-family: 'Lobster', cursive;
+            color: #106861;
+        }
+        .form-label {
+            font-family: 'Lobster', cursive;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        pre.form-control {
+            height: 100px;
+            overflow-y: auto;
+        }
+        .btn-icon {
+            margin-right: 8px;
+        }
+        .diccionario-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .form-group {
+            margin-bottom: 0.5rem;
+        }
+        .row .col-md-6 {
+            padding: 0 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <button class="btn btn-custom btn-logout" onclick="cerrarSesion()">
+        <i class="fas fa-sign-out-alt btn-icon"></i> Cerrar Sesión
+    </button>
+    <div class="header">
+        <h1>Compresor Huffman</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="texto" class="form-label">Texto a comprimir:</label>
+            <textarea class="form-control" id="texto" rows="6"></textarea>
+            <button class="btn btn-custom btn-compress mt-2">
+                <i class="fas fa-compress-alt btn-icon"></i> Comprimir
+            </button>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="texto_comprimido" class="form-label">Texto comprimido:</label>
+            <textarea class="form-control" id="texto_comprimido" rows="6" readonly></textarea>
+        </div>
+    </div>
+    <div class="mt-3">
+        <label for="diccionario" class="form-label">Diccionario de codificación:</label>
+        <div class="diccionario-container">
+            <pre class="form-control" id="diccionario" readonly></pre>
+            <button class="btn btn-custom copy-button" onclick="copiarDiccionario()">
+                <i class="fas fa-copy btn-icon"></i> Copiar Diccionario
+            </button>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6 form-group">
+            <label for="texto_a_descomprimir" class="form-label">Texto a descomprimir:</label>
+            <textarea class="form-control" id="texto_a_descomprimir" rows="6"></textarea>
+            <button class="btn btn-custom btn-decompress mt-2" onclick="descomprimirTexto()">
+                <i class="fas fa-expand-alt btn-icon"></i> Descomprimir
+            </button>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="texto_descomprimido" class="form-label">Texto descomprimido:</label>
+            <textarea class="form-control" id="texto_descomprimido" rows="6" readonly></textarea>
+        </div>
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="{{ url_for('static', filename='huffman.js') }}"></script>
+
+<script>
+    function copiarDiccionario() {
+        /* Función para copiar el diccionario */
+    }
+
+    function cerrarSesion() {
+        window.location.href = '/';
+    }
+
+    function descomprimirTexto() {
+        const textoADecomprimir = document.getElementById('texto_a_descomprimir').value;
+        // Implementa aquí la lógica para descomprimir el texto
+        // Actualiza el campo 'texto_descomprimido' con el resultado
+        document.getElementById('texto_descomprimido').value = textoADecomprimir; // Ejemplo de actualización
+    }
+</script>
+
+</body>
+</html>

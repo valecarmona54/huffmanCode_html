@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código Huffran</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Oculta la barra de desplazamiento horizontal */
+            display: grid;
+            grid-template-columns: 200px auto; /* Columna del menú y columna para el contenido */
+            height: 100vh; /* Establece la altura de la página al 100% del viewport */
+        }
+
+        header {
+            display: none; /* Oculta el encabezado */
+        }
+
+        .menu-vertical {
+            background-color: #CBD9D8; /* Cambia el color de fondo del menú */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centra los elementos verticalmente */
+            align-items: center; /* Centra los elementos horizontalmente */
+            width: 200px; /* Ajusta el ancho del menú */
+        }
+
+        .menu-vertical ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0; /* Elimina el margen predeterminado */
+        }
+
+        .menu-vertical li {
+            margin-bottom: 20px;
+        }
+
+        .menu-vertical a {
+            display: block; /* Convierte los enlaces en bloques para que ocupen todo el ancho */
+            color: black; /* Cambia el color de los enlaces */
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 10px; /* Añade relleno para que parezcan botones */
+            border: 1px solid black; /* Añade borde */
+            border-radius: 5px; /* Añade bordes redondeados */
+            text-align: center; /* Centra el texto horizontalmente */
+            transition: background-color 0.3s; /* Agrega una transición suave al color de fondo */
+        }
+
+        .menu-vertical a:hover {
+            background-color: #DDD; /* Cambia el color de fondo al pasar el mouse */
+        }
+
+        .carousel {
+            background-image: url('{{ url_for('static', filename='fondo_inicio.png') }}'); /* Agrega la imagen de fondo_inicio */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-inner {
+            display: flex;
+            flex-direction: column; /* Apila las imágenes una encima de la otra */
+            align-items: center; /* Centra las imágenes horizontalmente */
+        }
+
+        .carousel-item img {
+            width: 80%; /* Ancho del 80% del contenedor */
+            max-width: 800px; /* Ancho máximo */
+            height: auto; /* Altura automática */
+            margin-bottom: 20px; /* Agrega un margen inferior para separar las imágenes */
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-vertical">
+        <ul>
+            <li><a href="login">Iniciar Sesión</a></li>
+            <li><a href="register">Registrarse</a></li>
+        </ul>
+    </div>
+    <div class="carousel">
+        <div class="carousel-inner">
+            <!-- Aquí no hay imágenes -->
+        </div>
+    </div>
+</body>
+</html>

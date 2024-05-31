@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear usuario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto&family=Playfair+Display&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('static/fondo.png'); /* Ruta de la imagen de fondo */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px; /* Aumentar el ancho del container */
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #106861; /* Añadir un borde al container con el color especificado */
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con transparencia */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-login, .btn-register {
+            width: 100%;
+            border-radius: 50px; /* Hacer los botones más ovalados */
+            color: #fff; /* Cambiar el color del texto a blanco */
+        }
+        .btn-login {
+            background-color: #106861; /* Cambiar el color del botón de Iniciar Sesión */
+            border-color: #106861;
+        }
+        .btn-login:hover {
+            background-color: #51B2AA; /* Cambiar el color del botón al pasar el mouse */
+            border-color: #1C9D93;
+        }
+        .btn-register {
+            background-color: #76B8B3; /* Cambiar el color del botón de Registrarse */
+            border-color: #6c757d;
+        }
+        .btn-register:hover {
+            background-color: #51B2AA; /* Cambiar el color del botón al pasar el mouse */
+            border-color: #495057;
+        }
+        h1 {
+            font-family: 'Lobster', cursive; /* Cambiar la fuente del título a Lobster */
+            color: #106861; /* Cambiar el color del título al mismo color del botón de registrarse */
+        }
+        label {
+            font-family: 'Playfair Display', serif; /* Cambiar la fuente de las etiquetas a una más elegante */
+        }
+        .title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .title-container img {
+            margin-left: 10px;
+            height: 100px; /* Aumentar la altura de la imagen */
+            width: auto; /* Mantener la proporción de la imagen */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="title-container text-center mb-4">
+        <h1>Crear usuario</h1>
+        <img src="static/nuevo_usuario.png" alt="Imagen">
+    </div>
+    <form id="registerForm">
+        <div class="form-group row">
+            <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="apellido" class="col-sm-2 col-form-label">Apellido</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="apellido" name="apellido" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="correo" class="col-sm-2 col-form-label">Correo</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="correo" name="correo" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="usuario" class="col-sm-2 col-form-label">Usuario</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="usuario" name="usuario" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="contrasena" class="col-sm-2 col-form-label">Contraseña</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-login">Registrar</button>
+    </form>
+    {% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+    {% endif %}
+    <div class="text-center mt-3">
+        <a href="/login" class="btn btn-secondary btn-register">Volver al menú anterior</a>
+    </div>
+</div>
+
+<!-- jQuery y Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const registerForm = document.getElementById('registerForm');
+
+        registerForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            const correo = document.getElementById('correo').value;
+            const usuario = document.getElementById('usuario').value;
+            const contrasena = document.getElementById('contrasena').value;
+
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nombre: nombre,
+                    apellido: apellido,
+                    correo: correo,
+                    usuario: usuario,
+                    contrasena: contrasena
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                    window.location.href = '/login';
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ha ocurrido un error al intentar registrar el usuario.');
+            });
+        });
+    });
+</script>
+</body>
+</html>

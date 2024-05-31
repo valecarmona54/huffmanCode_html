@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('{{ url_for("static", filename="descarga.png") }}');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card {
+            width: 550px; /* Ajustar el ancho del formulario */
+            max-width: 90%;
+            padding: 20px;
+            border: 6px solid #106861; /* Cambiar el color del borde del formulario */
+            border-radius: 40px;
+            background-color: #fff;
+            /* Alineación a la derecha */
+            margin-left: auto;
+            margin-right: 200px;
+            /* Margen superior */
+            margin-top: 100px;
+        }
+        .card-title {
+            font-family: 'Lobster', cursive; /* Cambiar la fuente del título a Lobster */
+            font-size: 24px; /* Tamaño de fuente más pequeño */
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            font-family: 'Lobster', cursive; /* Cambiar la fuente de las etiquetas */
+            font-size: 18px; /* Tamaño de fuente de las etiquetas */
+        }
+        .form-control {
+            font-family: 'Roboto', sans-serif; /* Cambiar la fuente de los campos de entrada */
+            font-size: 16px; /* Tamaño de fuente de los campos de entrada */
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn-login, .btn-register, .btn-back {
+            width: 48%; /* Ajustar el ancho de los botones */
+            border-radius: 50px; /* Hacer los botones más ovalados */
+        }
+        .btn-login {
+            background-color: #106861; /* Cambiar el color del botón de Iniciar Sesión */
+            border-color: #106861;
+        }
+        .btn-login:hover {
+            background-color: #51B2AA; /* Cambiar el color del botón al pasar el mouse */
+            border-color: #1C9D93;
+        }
+        .btn-register, .btn-back {
+            background-color: #76B8B3; /* Cambiar el color del botón de Registrarse y Volver al menú principal */
+            border-color: #6c757d;
+        }
+        .btn-register:hover, .btn-back:hover {
+            background-color: #51B2AA; /* Cambiar el color del botón al pasar el mouse */
+            border-color: #495057;
+        }
+        .btn-back-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn-back {
+            width: 100%; /* Ajustar el ancho del botón de Volver al menú principal */
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2 class="card-title text-center mb-4">Iniciar Sesión</h2>
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="usuario" class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="usuario" placeholder="Ingrese su usuario">
+        </div>
+        <div class="form-group">
+            <label for="contrasena" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="contrasena" placeholder="Ingrese su contraseña">
+        </div>
+        <div class="btn-container">
+            <button type="submit" class="btn btn-primary btn-login">Iniciar Sesión</button>
+            <button type="submit" class="btn btn-secondary btn-register">Registrarse</button>
+        </div>
+        <div class="btn-back-container">
+            <button type="button" class="btn btn-secondary btn-back" onclick="window.location.href='/'">Volver al menú principal</button>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS y jQuery (opcional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const usuario = document.getElementById('usuario').value;
+        const contrasena = document.getElementById('contrasena').value;
+        const isRegister = event.submitter.classList.contains('btn-register');
+        const endpoint = isRegister ? '/register' : '/login';
+
+        if (isRegister) {
+            window.location.href = '/register'; 
+            return; 
+        }
+
+        fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                usuario: usuario,
+                contrasena: contrasena
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(data.message + '. Redirigiendo a la página de compresión.');
+                window.location.href = '/compress';
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ha ocurrido un error al intentar iniciar sesión.');
+        });
+    });
+});
+</script>
+
+</body>
+</html>
